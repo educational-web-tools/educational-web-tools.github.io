@@ -1,5 +1,9 @@
 name: Main test pipeline
-on: push
+on:
+  push:
+    branches:
+      - '*' # All branches
+      - '!gh-pages' # Ignore gh-pages since it's just the web bundle
 jobs:
   build:
     runs-on: ubuntu-latest
