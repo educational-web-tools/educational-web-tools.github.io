@@ -1,0 +1,27 @@
+name: Main test pipeline
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+          
+      - name: Install latest chrome
+        run: |
+          sudo apt update
+          sudo apt install chromium-driver google-chrome-stable
+          
+      - name: Install Dependencies
+        run: npm ci
+        
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: |
+          npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+          npm run e2e -- --protractor-config=e2e/protractor-ci.conf.js
